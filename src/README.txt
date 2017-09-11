@@ -1,0 +1,1 @@
+// build.xml file is used to create a single jar with external libraries included. Goto files tab , select build.xml and Run target-> other target-> package-for-store

@@ -1,0 +1,10 @@
+*.xml
+*.xlsx
+backup_jars
+dist
+nbproject
+store
+dist_Copy
+src_Copy
+build
+
