@@ -25,9 +25,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelWriter2 {
 
         private static CellStyle cellStyleBold;
+        
+        private static boolean isFirstQuestionAnswer = false;
 
-        public static void writeExcel(File sourceFile, String excelFile,boolean firstQuestionAnswer) throws IOException, InvalidFormatException {
+        public static void writeExcel(File sourceFile, String excelFile, boolean firstQuestionAnswer) throws IOException, InvalidFormatException {
                 Workbook workbook = new XSSFWorkbook();
+                isFirstQuestionAnswer = firstQuestionAnswer;
 
                 Sheet sheet = workbook.createSheet();
 
@@ -38,21 +41,21 @@ public class ExcelWriter2 {
                 cellStyleBold.setFont(font);
 
                 int rowCount = 0;
-                
+
                 Row row0 = sheet.createRow(rowCount);
                 Cell cell1 = row0.createCell(0);
-                if(firstQuestionAnswer){
+                if (isFirstQuestionAnswer) {
                         cell1.setCellValue("First Question");
-                }else{
-                       cell1.setCellValue("Last Question");
+                } else {
+                        cell1.setCellValue("Last Question");
                 }
- 
+
                 cell1.setCellStyle(cellStyleBold);
-                
+
                 Cell cell2 = row0.createCell(1);
                 cell2.setCellValue("Answer");
                 cell2.setCellStyle(cellStyleBold);
-                
+
                 try (BufferedReader br = new BufferedReader(new FileReader(sourceFile))) {
                         String line;
                         while ((line = br.readLine()) != null) {
@@ -71,6 +74,8 @@ public class ExcelWriter2 {
                 String[] lineArray = lineString.split(";");
 
                 if (lineArray != null) {
+                        
+                        /* old code
                         Cell cell1 = row.createCell(0);
                         cell1.setCellValue(lineArray[lineArray.length - 2]);
                        // cell1.setCellStyle(cellStyleBold);
@@ -78,13 +83,42 @@ public class ExcelWriter2 {
                         Cell cell2 = row.createCell(1);
                         cell2.setCellValue(lineArray[lineArray.length - 1]);
                         //cell2.setCellStyle(cellStyleBold);
+                                */
+                        
+                        // Last node should be always be a Diagnostics node, throw error if last node is not diagnostic node.
+                        if (lineArray[lineArray.length - 1].equals("*")) {  
+                                
+                                //Diagnotic node, check if previous node is UserInputNode.
+                                if(lineArray[lineArray.length - 2].startsWith("USERINPUTNODE_")){
+                                       // removing text "USERINPUTNODE_" from the begining.
+                                        writeLastQuestionAnswer(lineArray[lineArray.length - 2].substring(14),lineArray[lineArray.length - 1],row);
+                                }else{
+                                        writeLastQuestionAnswer(lineArray[lineArray.length - 3],lineArray[lineArray.length - 2],row);
+                                }
+                        }else {
+                                
+                                if(isFirstQuestionAnswer)
+                                        writeLastQuestionAnswer(lineArray[lineArray.length - 2], lineArray[lineArray.length - 1],row);
+                                else
+                                        writeLastQuestionAnswer(" *** Error: Last node is not diagnostics node" , "*** Error: Last node is not diagnostics node",row);
+                        }
                 }
+        }
+
+        public static void writeLastQuestionAnswer(String lastQuestion, String lastAnswer, Row row) {
+
+                Cell cell1 = row.createCell(0);
+                cell1.setCellValue(lastQuestion);
+
+                Cell cell2 = row.createCell(1);
+                cell2.setCellValue(lastAnswer);
+
         }
 
         public static void main(String[] args) {
 
                 try {
-                        ExcelWriter2.writeExcel(new File("test_output.txt"), "Blah.xlsx",false);
+                        ExcelWriter2.writeExcel(new File("test_output.txt"), "Blah.xlsx", false);
                 } catch (IOException ex) {
                         ex.printStackTrace();
                 } catch (InvalidFormatException ex) {

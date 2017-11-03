@@ -85,7 +85,7 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
 
         }
 
-        private void generateExcelSheet(String fileName,boolean isFirstQuestionAnswer) {
+        public void generateExcelSheet(String fileName,boolean isFirstQuestionAnswer) {
 
                 // generating excel
                 File sourceFileforExcel = new File(fileName + "_output.txt");
@@ -116,16 +116,21 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
                 }
         }
         
-        private void deleteTempFiles(){
+        public  void deleteTempFiles(){
                 
                 System.out.println("OuputFile : " + outputTextFileNameTemp + " " + outputTextFileName);
                 
                 File fileTemp = new File(outputTextFileNameTemp);
                 File fileTempOutput = new File(outputTextFileName);
                 
-                fileInitialCopy.delete();
-                fileTemp.delete();
-                fileTempOutput.delete();
+                boolean isInitialFileDeleteSuccess = fileInitialCopy.delete();
+                System.out.println("Initial File Delete Success : " + isInitialFileDeleteSuccess);
+                
+                boolean isTempFileDeleteSuccess = fileTemp.delete();
+                System.out.println("isTempFileDeleteSuccess : " + isTempFileDeleteSuccess);
+                
+                boolean isTempOutputDeleteSuccess = fileTempOutput.delete();
+                System.out.println("isTempOutputDeleteSuccess : " + isTempOutputDeleteSuccess);
         }
 
         public void startFileProcessing() {
@@ -147,6 +152,11 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
 
                 } finally {
                         out2.close();
+                        try {
+                                br.close();
+                        } catch (IOException ex) {
+                                Logger.getLogger(FileProcessTask.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                 }
 
         }

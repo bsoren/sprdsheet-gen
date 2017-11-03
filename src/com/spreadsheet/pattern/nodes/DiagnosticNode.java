@@ -6,7 +6,10 @@
 package com.spreadsheet.pattern.nodes;
 
 import com.spreadsheet.FileProcessTask;
+import static com.spreadsheet.pattern.nodes.NodeElement.SEPARATOR_CHARACTER;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -24,8 +27,29 @@ public class DiagnosticNode extends NodeElement{
 
         @Override
         public void processNode() {
-             System.out.println("Diagnosis node");
-             sgb.printLine(builder.toString());
+             //System.out.println("Diagnosis node");
+             //sgb.printLine(builder.toString());
+                
+                
+                System.out.println("Processing - Diagnostic node");
+
+               // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+                String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+                System.out.println("Diagnostics_Node_Name : " + prompt);
+                prompt = "*";
+
+                NodeList suElements = elem.getElementsByTagName("successorDefault");
+                String next = ((Element) suElements.item(0)).getElementsByTagName("next").item(0).getTextContent();
+
+                StringBuilder builder2 = new StringBuilder();
+                builder2.append(builder.toString());
+                builder2.append(SEPARATOR_CHARACTER + prompt);
+                System.out.println("next node : " + next);
+
+                Node node1 = sgb.nodeFinder(next);
+                NodeElement nodeElem;
+                nodeElem = sgb.createNode(node1, builder2);
+                nodeElem.processNode();
         }
         
 }

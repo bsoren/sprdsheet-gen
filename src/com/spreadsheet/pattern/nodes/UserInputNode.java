@@ -28,7 +28,8 @@ public class UserInputNode extends NodeElement {
         public void processNode() {
                 System.out.println("Processing - UserInput node");
 
-                String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+               // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+                String prompt = elem.getElementsByTagName("prompt").item(0).getTextContent();
                 System.out.println("UserInput_Name : " + prompt);
 
                 NodeList suElements = elem.getElementsByTagName("successorDefault");
@@ -36,7 +37,7 @@ public class UserInputNode extends NodeElement {
 
                 StringBuilder builder2 = new StringBuilder();
                 builder2.append(builder.toString());
-                //builder2.append(SEPARATOR_CHARACTER + prompt);
+                builder2.append(SEPARATOR_CHARACTER + "USERINPUTNODE_"+prompt);
                 System.out.println("next node : " + next);
 
                 Node node1 = sgb.nodeFinder(next);
