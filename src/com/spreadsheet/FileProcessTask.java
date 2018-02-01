@@ -126,11 +126,11 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
                 boolean isInitialFileDeleteSuccess = fileInitialCopy.delete();
                 System.out.println("Initial File Delete Success : " + isInitialFileDeleteSuccess);
                 
-                boolean isTempFileDeleteSuccess = fileTemp.delete();
-                System.out.println("isTempFileDeleteSuccess : " + isTempFileDeleteSuccess);
+               // boolean isTempFileDeleteSuccess = fileTemp.delete();
+               // System.out.println("isTempFileDeleteSuccess : " + isTempFileDeleteSuccess);
                 
-                boolean isTempOutputDeleteSuccess = fileTempOutput.delete();
-                System.out.println("isTempOutputDeleteSuccess : " + isTempOutputDeleteSuccess);
+               // boolean isTempOutputDeleteSuccess = fileTempOutput.delete();
+                //System.out.println("isTempOutputDeleteSuccess : " + isTempOutputDeleteSuccess);
         }
 
         public void startFileProcessing() {
@@ -226,7 +226,7 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
                         String currentElemText = ((Element) node).getElementsByTagName("selectionText").item(0).
                               getTextContent();
 
-                        System.out.println("sucessorUserSelectionOption : " + currentElemText);
+                        System.out.println("               sucessorUserSelectionOption : " + currentElemText);
 
                         String next = ((Element) node).getElementsByTagName("next").item(0).getTextContent();
                         //System.out.println("next node : "+next);
@@ -242,11 +242,8 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
                                 this.printLine(builder3.toString());
                         }else{
                                  nodeElem = createNode(node1, builder3);
-                                nodeElem.processNode();
+                                 nodeElem.processNode();
                         }
-
-                       
-
                 }
 
         }
@@ -559,4 +556,5 @@ public class FileProcessTask extends SwingWorker<Void, Integer> {
         private void setFirstQuestionAnswer(boolean bvalue){
                 this.isFirstQuestionAnswer = bvalue;
         }
+
 }

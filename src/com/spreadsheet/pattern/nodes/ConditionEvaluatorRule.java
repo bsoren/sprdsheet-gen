@@ -26,6 +26,7 @@ public class ConditionEvaluatorRule extends NodeElement{
         public void processNode() {
              System.out.println("Codition Evaluator node");
              sgb.printLine(builder.toString());
+                
         }
         
 }

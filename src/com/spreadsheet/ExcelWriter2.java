@@ -55,6 +55,12 @@ public class ExcelWriter2 {
                 Cell cell2 = row0.createCell(1);
                 cell2.setCellValue("Answer");
                 cell2.setCellStyle(cellStyleBold);
+                
+                // column 3
+                Cell cell3 = row0.createCell(2);
+                cell3.setCellValue("Reference IT flow");
+                cell3.setCellStyle(cellStyleBold);
+                
 
                 try (BufferedReader br = new BufferedReader(new FileReader(sourceFile))) {
                         String line;
@@ -85,13 +91,18 @@ public class ExcelWriter2 {
                         //cell2.setCellStyle(cellStyleBold);
                                 */
                         
+                        
                         // Last node should be always be a Diagnostics node, throw error if last node is not diagnostic node.
-                        if (lineArray[lineArray.length - 1].equals("*")) {  
+                        if (lineArray[lineArray.length - 1].equals("END_NODE")) {  
                                 
                                 //Diagnotic node, check if previous node is UserInputNode.
                                 if(lineArray[lineArray.length - 2].startsWith("USERINPUTNODE_")){
                                        // removing text "USERINPUTNODE_" from the begining.
-                                        writeLastQuestionAnswer(lineArray[lineArray.length - 2].substring(14),lineArray[lineArray.length - 1],row);
+                                        writeLastQuestionAnswer(lineArray[lineArray.length - 2].substring(14),"*",row);
+                                        
+                                }else if(lineArray[lineArray.length - 2].startsWith("RR_")){  // Reference Node is last node.
+                                        writeLastQuestionAnswerBeforeReferenceRule(lineArray[lineArray.length - 4],
+                                                lineArray[lineArray.length - 3], lineArray[lineArray.length - 2],row);
                                 }else{
                                         writeLastQuestionAnswer(lineArray[lineArray.length - 3],lineArray[lineArray.length - 2],row);
                                 }
@@ -100,7 +111,7 @@ public class ExcelWriter2 {
                                 if(isFirstQuestionAnswer)
                                         writeLastQuestionAnswer(lineArray[lineArray.length - 2], lineArray[lineArray.length - 1],row);
                                 else
-                                        writeLastQuestionAnswer(" *** Error: Last node is not diagnostics node" , "*** Error: Last node is not diagnostics node",row);
+                                        writeLastQuestionAnswer(" *** Error: " , "*** Error:",row);
                         }
                 }
         }
@@ -112,6 +123,19 @@ public class ExcelWriter2 {
 
                 Cell cell2 = row.createCell(1);
                 cell2.setCellValue(lastAnswer);
+
+        }
+        
+        public static void writeLastQuestionAnswerBeforeReferenceRule(String lastQuestion, String lastAnswer, String refRuleName, Row row) {
+
+                Cell cell1 = row.createCell(0);
+                cell1.setCellValue(lastQuestion);
+
+                Cell cell2 = row.createCell(1);
+                cell2.setCellValue(lastAnswer);
+                
+                Cell cell3 = row.createCell(2);
+                cell3.setCellValue(refRuleName);
 
         }
 

@@ -1,5 +1,7 @@
 *.xml
 *.xlsx
+*.txt
+*.xls
 backup_jars
 dist
 nbproject

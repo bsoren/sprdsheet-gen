@@ -28,22 +28,30 @@ public class UserInputNode extends NodeElement {
         public void processNode() {
                 System.out.println("Processing - UserInput node");
 
-               // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+                // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
                 String prompt = elem.getElementsByTagName("prompt").item(0).getTextContent();
                 System.out.println("UserInput_Name : " + prompt);
 
                 NodeList suElements = elem.getElementsByTagName("successorDefault");
                 String next = ((Element) suElements.item(0)).getElementsByTagName("next").item(0).getTextContent();
 
-                StringBuilder builder2 = new StringBuilder();
-                builder2.append(builder.toString());
-                builder2.append(SEPARATOR_CHARACTER + "USERINPUTNODE_"+prompt);
-                System.out.println("next node : " + next);
+                if (next.equals("END")) {
+                        System.out.println("**** END NODE ****");
+                        builder.append(SEPARATOR_CHARACTER + "END_NODE");
+                        sgb.printLine(builder.toString());
+                } else {
+                        StringBuilder builder2 = new StringBuilder();
+                        builder2.append(builder.toString());
+                        builder2.append(SEPARATOR_CHARACTER + "USERINPUTNODE_" + prompt);
+                        System.out.println("next node : " + next);
 
-                Node node1 = sgb.nodeFinder(next);
-                NodeElement nodeElem;
-                nodeElem = sgb.createNode(node1, builder2);
-                nodeElem.processNode();
+                        Node node1 = sgb.nodeFinder(next);
+                        NodeElement nodeElem;
+                        nodeElem = sgb.createNode(node1, builder2);
+                        nodeElem.processNode();
+
+                }
+
         }
 
 }

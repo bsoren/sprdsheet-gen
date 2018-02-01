@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
  *
  * @author bsoren
  */
-public class DiagnosticNode extends NodeElement{
+public class DiagnosticNode extends NodeElement {
 
         public DiagnosticNode(Node node, StringBuilder builder) {
                 super(node, builder);
@@ -27,29 +27,37 @@ public class DiagnosticNode extends NodeElement{
 
         @Override
         public void processNode() {
-             //System.out.println("Diagnosis node");
-             //sgb.printLine(builder.toString());
-                
-                
+                //System.out.println("Diagnosis node");
+                //sgb.printLine(builder.toString());
+
                 System.out.println("Processing - Diagnostic node");
 
-               // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
+                // String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
                 String prompt = elem.getElementsByTagName("name").item(0).getTextContent();
                 System.out.println("Diagnostics_Node_Name : " + prompt);
                 prompt = "*";
 
                 NodeList suElements = elem.getElementsByTagName("successorDefault");
+
+                // check if next node is END node. Stop processing and print.
                 String next = ((Element) suElements.item(0)).getElementsByTagName("next").item(0).getTextContent();
 
-                StringBuilder builder2 = new StringBuilder();
-                builder2.append(builder.toString());
-                builder2.append(SEPARATOR_CHARACTER + prompt);
-                System.out.println("next node : " + next);
+                if (next.equals("END")) {
+                        System.out.println("**** END NODE ****");
+                        builder.append(SEPARATOR_CHARACTER + "END_NODE");
+                        sgb.printLine(builder.toString());
+                } else {
+                        StringBuilder builder2 = new StringBuilder();
+                        builder2.append(builder.toString());
+                        //builder2.append(SEPARATOR_CHARACTER + prompt);
+                        System.out.println("next node : " + next);
 
-                Node node1 = sgb.nodeFinder(next);
-                NodeElement nodeElem;
-                nodeElem = sgb.createNode(node1, builder2);
-                nodeElem.processNode();
+                        Node node1 = sgb.nodeFinder(next);
+                        NodeElement nodeElem;
+                        nodeElem = sgb.createNode(node1, builder2);
+                        nodeElem.processNode();
+                }
+
         }
-        
+
 }

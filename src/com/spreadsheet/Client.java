@@ -15,7 +15,7 @@ public class Client {
         public static void main(String[] args) {
                 
                 System.out.println("Running.....");
-                String fileName = "C:\\Users\\bsoren\\WORK\\AT_Flows\\AT_Flow\\Collab_AT_OCHS_IpAddressWhiteListing\\IF84984_timelaboursetup_v1.xml";
+                String fileName = "C:\\Users\\bsoren\\Desktop\\IMS_tools\\OCHS_SAASHOSTAPP_LANGPACK_IF80063.xml";
                 
                 File uploadedFile = new File(fileName);
                 String parentDir = uploadedFile.getParent();
